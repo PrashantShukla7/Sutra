@@ -5,7 +5,7 @@ import interpreter.Interpreter;
 import lexer.Lexer;
 import parser.Parser;
 
-public class Nova {
+public class Sutra {
 
     private final Interpreter interpreter =
             new Interpreter();

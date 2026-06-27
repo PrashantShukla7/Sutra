@@ -1,5 +1,5 @@
-rakh x = 10;
-rakh y = 40;
+man x = 10;
+man y = 40;
 
 bolo(x+y);
 

@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args)
             throws Exception {
 
-        Nova nova = new Nova();
+        Sutra nova = new Sutra();
 
         if(args.length > 0){
 

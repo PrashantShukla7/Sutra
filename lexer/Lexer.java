@@ -122,7 +122,7 @@ public class Lexer {
 
         switch (text) {
 
-            case "rakh":
+            case "man":
                 add(TokenType.LET, text);
                 break;
 
