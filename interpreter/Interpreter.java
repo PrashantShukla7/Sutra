@@ -4,6 +4,7 @@ import ast.Expr;
 import ast.Stmt;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Interpreter implements Expr.Visitor<Object>,
         Stmt.Visitor<Void> {
@@ -25,6 +26,23 @@ public class Interpreter implements Expr.Visitor<Object>,
 
     private Object evaluate(Expr expr) {
         return expr.accept(this);
+    }
+
+    private boolean isTruthy(Object value) {
+
+        if (value == null)
+            return false;
+
+        if (value instanceof Boolean)
+            return (Boolean) value;
+
+        if (value instanceof Integer)
+            return (Integer) value != 0;
+
+        if (value instanceof String)
+            return !((String) value).isEmpty();
+
+        return true;
     }
 
     // =========================
@@ -59,6 +77,32 @@ public class Interpreter implements Expr.Visitor<Object>,
         return null;
     }
 
+    @Override
+    public Void visitIfStmt(Stmt.If stmt) {
+
+        if (isTruthy(evaluate(stmt.condition))) {
+
+            execute(stmt.thenBranch);
+
+        } else if (stmt.elseBranch != null) {
+
+            execute(stmt.elseBranch);
+
+        }
+
+        return null;
+    }
+
+    @Override
+    public Void visitBlockStmt(Stmt.Block stmt) {
+
+        for (Stmt statement : stmt.statements) {
+            execute(statement);
+        }
+
+        return null;
+    }
+
     // =========================
     // Expressions
     // =========================
@@ -84,22 +128,43 @@ public class Interpreter implements Expr.Visitor<Object>,
     @Override
     public Object visitBinaryExpr(Expr.Binary expr) {
 
-        int left = (Integer) evaluate(expr.left);
-        int right = (Integer) evaluate(expr.right);
+        Object leftOperand = evaluate(expr.left);
+        Object rightOperand = evaluate(expr.right);
 
         switch (expr.operator) {
 
             case "+":
-                return left + right;
-
             case "-":
-                return left - right;
-
             case "*":
-                return left * right;
-
             case "/":
-                return left / right;
+            case "<":
+            case ">":
+            case "<=":
+            case "%":
+            case ">=": {
+
+                int left = (Integer) leftOperand;
+                int right = (Integer) rightOperand;
+
+                switch (expr.operator) {
+                    case "+": return left + right;
+                    case "-": return left - right;
+                    case "*": return left * right;
+                    case "/": return left / right;
+                    case "<": return left < right;
+                    case ">": return left > right;
+                    case "<=": return left <= right;
+                    case ">=": return left >= right;
+                    case "%": return left % right;
+                }
+            }
+
+            case "==":
+                return Objects.equals(leftOperand, rightOperand);
+
+            case "!=":
+                return !Objects.equals(leftOperand, rightOperand);
+
 
             default:
                 throw new RuntimeException(

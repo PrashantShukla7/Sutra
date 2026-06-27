@@ -1,0 +1,9 @@
+man x = 10;
+man y = 20;
+
+yadi(x > y){
+    bolo("x is greater");
+}
+anyatha{
+    bolo("y is greater");
+}

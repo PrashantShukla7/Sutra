@@ -1,5 +1,7 @@
 package ast;
 
+import lexer.Token;
+
 public abstract class Expr {
 
     public interface Visitor<R> {

@@ -39,7 +39,10 @@ public class Lexer {
                     break;
 
                 case '=':
-                    add(TokenType.EQUAL, "=");
+                    if(match('='))
+                        add(TokenType.EQUAL_EQUAL, "==");
+                    else
+                        add(TokenType.EQUAL, "=");
                     break;
 
                 case '(':
@@ -50,8 +53,48 @@ public class Lexer {
                     add(TokenType.RIGHT_PAREN, ")");
                     break;
 
+                case '<':
+                    if(match('=')) 
+                        add(TokenType.LESS_EQUAL, "<=");
+                    else
+                        add(TokenType.LESS, "<");
+                    break;
+
+                case '>':
+                    if(match('=')) {
+                        add(TokenType.GREATER_EQUAL, ">=");
+                    }
+                    else
+                        add(TokenType.GREATER, ">");
+                    break;
+
+                case '!':
+                    if(match('=')) {
+                        add(TokenType.NOT_EQUAL, "!=");
+                    }
+                    else
+                        add(TokenType.NOT, "!");
+                    break;
+
+                case '{':
+                    add(TokenType.LEFT_BRACE, "{");
+                    break;
+                
+                case '}':
+                    add(TokenType.RIGHT_BRACE, "}");
+                    break;
+
+                case '%':
+                    add(TokenType.MODULO, "%");
+                    break;
+
+                case '"':
+                    string();
+                    break;
+
                 case ';':
                     add(TokenType.SEMICOLON, ";");
+
 
                 case ' ':
                 case '\r':
@@ -88,6 +131,16 @@ public class Lexer {
         return source.charAt(current++);
     }
 
+    private boolean match(char expected) {
+        if (isAtEnd()) return false;
+        
+        if (source.charAt(current) != expected) {
+            return false;
+        }
+        current++;
+        return true;
+    }
+
     private void add(TokenType type, String lexeme) {
         tokens.add(new Token(type, lexeme));
     }
@@ -104,6 +157,33 @@ public class Lexer {
         }
 
         add(TokenType.NUMBER, sb.toString());
+    }
+
+    private void string() {
+
+        int start = current;
+
+        while (!isAtEnd() && peek() != '"') {
+            advance();
+        }
+
+        if (isAtEnd()) {
+            throw new RuntimeException("Unterminated string.");
+        }
+
+        String value = source.substring(start, current);
+
+        // consume closing "
+        advance();
+
+        add(TokenType.STRING, value);
+    }
+
+    private char peek() {
+        if (isAtEnd()) {
+            return '\0';
+        }
+        return source.charAt(current);
     }
 
     private void identifier(char first) {
@@ -128,6 +208,26 @@ public class Lexer {
 
             case "bolo":
                 add(TokenType.PRINT, text);
+                break;
+
+            case "yadi":
+                add(TokenType.IF, text);
+                break;
+            
+            case "anyatha":
+                add(TokenType.ELSE, text);
+                break;
+
+            case "bada":
+                add(TokenType.GREATER, ">");
+                break;
+
+            case "true":
+                add(TokenType.TRUE, text);
+                break;
+
+            case "false":
+                add(TokenType.FALSE, text);
                 break;
 
             default:

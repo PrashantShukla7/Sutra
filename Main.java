@@ -11,14 +11,14 @@ public class Main {
     public static void main(String[] args)
             throws Exception {
 
-        Sutra nova = new Sutra();
+        Sutra sutra = new Sutra();
 
         if(args.length > 0){
 
             String source =
                 Files.readString(Path.of(args[0]));
 
-            nova.run(source);
+            sutra.run(source);
 
         }else{
 

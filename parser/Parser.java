@@ -19,6 +19,10 @@ public class Parser {
 
     public List<Stmt> parse() {
 
+        // for(Token token: tokens) {
+        //     System.out.println(token);
+        // }
+
         List<Stmt> statements = new ArrayList<>();
 
         while (!isAtEnd()) {
@@ -65,6 +69,14 @@ public class Parser {
             return printStatement();
         }
 
+        if (match(TokenType.LEFT_BRACE)) {
+            return block();
+        }
+
+        if (match(TokenType.IF)) {
+            return ifStatement();
+        }
+
         Expr expr = expression();
 
         consume(TokenType.SEMICOLON,
@@ -89,6 +101,48 @@ public class Parser {
         return new Stmt.Print(expr);
     }
 
+    private Stmt ifStatement() {
+
+        consume(TokenType.LEFT_PAREN,
+                "Expected '(' after yadi.");
+
+        Expr condition = expression();
+
+        consume(TokenType.RIGHT_PAREN,
+                "Expected ')' after condition.");
+
+        // Parse whatever statement comes next
+        Stmt thenBranch = statement();
+
+        Stmt elseBranch = null;
+
+        if (match(TokenType.ELSE)) {
+            elseBranch = statement();
+        }
+
+        return new Stmt.If(
+                condition,
+                thenBranch,
+                elseBranch
+        );
+    }
+
+    private Stmt block() {
+
+        List<Stmt> statements = new ArrayList<>();
+
+        while (!check(TokenType.RIGHT_BRACE)
+                && !isAtEnd()) {
+
+            statements.add(declaration());
+        }
+
+        consume(TokenType.RIGHT_BRACE,
+                "Expected '}' after block.");
+
+        return new Stmt.Block(statements);
+    }
+
     // -----------------------------------------------------
 
     private Expr expression() {
@@ -97,7 +151,7 @@ public class Parser {
 
     private Expr assignment() {
 
-        Expr expr = addition();
+        Expr expr = equality();
 
         if (match(TokenType.EQUAL)) {
 
@@ -113,6 +167,34 @@ public class Parser {
 
             throw new RuntimeException(
                     "Invalid assignment target.");
+        }
+
+        return expr;
+    }
+
+    private Expr equality() {
+        Expr expr = comparision();
+        while(match(TokenType.EQUAL_EQUAL)) {
+            Token operator = previous();
+
+            Expr right = comparision();
+
+            expr = new Expr.Binary(expr, operator.lexeme, right);
+        }
+
+        return expr;
+    }
+
+    // < > <= >= != 
+    private Expr comparision() {
+        Expr expr = addition();
+
+        while(match(TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL, TokenType.NOT_EQUAL, TokenType.EQUAL_EQUAL)) {
+            Token operator = previous();
+
+            Expr right = addition();
+
+            expr = new Expr.Binary(expr, operator.lexeme, right);
         }
 
         return expr;
@@ -146,7 +228,7 @@ public class Parser {
 
         Expr expr = primary();
 
-        while (match(TokenType.STAR, TokenType.SLASH)) {
+        while (match(TokenType.STAR, TokenType.SLASH, TokenType.MODULO)) {
 
             Token operator = previous();
 
@@ -186,6 +268,18 @@ public class Parser {
                     "Expected ')'.");
 
             return new Expr.Grouping(expr);
+        }
+
+        if (match(TokenType.TRUE)) {
+            return new Expr.Literal(true);
+        }
+
+        if (match(TokenType.FALSE)) {
+            return new Expr.Literal(false);
+        }
+
+        if (match(TokenType.STRING)) {
+            return new Expr.Literal(previous().lexeme);
         }
 
         throw error("Expected expression.");

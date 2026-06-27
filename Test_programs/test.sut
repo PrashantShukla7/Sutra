@@ -1,8 +1,0 @@
-man x = 10;
-man y = 40;
-
-bolo(x+y);
-
-x = x * 10;
-
-bolo(x);

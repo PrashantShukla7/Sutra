@@ -1,103 +1,229 @@
-# 🚀 Sutra Programming Language
-
 # 🕉️ Sutra Programming Language
 
-**Sutra** is a simple interpreted programming language built from scratch in **Java**. The goal of this project is to understand how programming languages work internally by implementing every stage—from lexical analysis to interpretation.
+> **A Sanskrit-inspired interpreted programming language built from scratch in Java.**
 
-Instead of directly executing source code, Sutra converts your program into tokens, builds an Abstract Syntax Tree (AST), and then interprets that AST.
+Sutra is an educational programming language designed to understand how programming languages work internally. It is implemented entirely in Java and follows the traditional interpreter architecture:
 
-> ⚠️ This project is currently under active development. New language features will be added in future versions.
+```
+Source Code
+     │
+     ▼
+Lexer
+     │
+     ▼
+Parser
+     │
+     ▼
+Abstract Syntax Tree (AST)
+     │
+     ▼
+Interpreter
+     │
+     ▼
+Program Output
+```
+
+The project is built incrementally, with every feature implemented from scratch without using parser generators or compiler frameworks.
 
 ---
 
-# ✨ Current Features
+# ✨ Features
 
-- Integer variables
-- Arithmetic operations (`+`, `-`, `*`, `/`)
-- Variable assignment
-- Variable reassignment
-- `bolo()` function to print output
-- Operator precedence
-- Parentheses
-- Read programs from `.sut` files
+## Variables
 
----
+Declare variables using the `man` keyword.
 
-# Example Program
-
-Create a file named `Test_programs/test.sut`
-
-```sut
+```sutra
 man x = 10;
-man y = 40;
+man y = 20;
+```
 
-bolo(x + y);
+---
 
-x = x * 10;
+## Variable Assignment
 
-bolo(x);
+```sutra
+x = x + 5;
+```
+
+---
+
+## Arithmetic Operators
+
+Sutra currently supports:
+
+| Operator | Description |
+|----------|-------------|
+| `+` | Addition |
+| `-` | Subtraction |
+| `*` | Multiplication |
+| `/` | Division |
+| `%` | Modulus |
+
+Example:
+
+```sutra
+man a = 30;
+man b = 4;
+
+bolo(a % b);
 ```
 
 Output
 
 ```
-50
-100
+2
 ```
 
 ---
 
-# Project Structure
+## Comparison Operators
 
-```
-Sutra/
-│
-├── src/
-│   ├── Main.java
-│   ├── Sutra.java
-│   │
-│   ├── lexer/
-│   ├── parser/
-│   ├── ast/
-│   └── interpreter/
-│
-├── programs/
-│   └── test.sut
-│
-├── README.md
-└── .gitignore
-```
+Supported comparison operators:
 
----
-
-# Language Keywords
-
-| Keyword | Meaning |
-|----------|---------|
-| `man` | Declare a variable |
-| `bolo()` | Print output |
+| Operator | Description |
+|----------|-------------|
+| `>` | Greater Than |
+| `<` | Less Than |
+| `>=` | Greater Than or Equal |
+| `<=` | Less Than or Equal |
+| `==` | Equal |
+| `!=` | Not Equal |
 
 Example
 
-```sut
+```sutra
 man age = 18;
 
-bolo(age);
+yadi(age >= 18){
+    bolo("Adult");
+}
 ```
 
 ---
 
-# How Sutra Works
+## Conditional Statements
 
-When you run
+Sutra supports conditional execution using Sanskrit-inspired keywords.
 
-```sut
+```sutra
 man x = 10;
+man y = 20;
 
-bolo(x + 5);
+yadi(x > y){
+    bolo("x is greater");
+}
+anyatha{
+    bolo("y is greater");
+}
 ```
 
-it goes through several stages.
+---
+
+## Blocks
+
+Multiple statements can be grouped using braces.
+
+```sutra
+yadi(x > 5){
+
+    bolo(x);
+
+    x = x + 10;
+
+    bolo(x);
+
+}
+```
+
+---
+
+## Printing
+
+Print variables
+
+```sutra
+bolo(x);
+```
+
+Print expressions
+
+```sutra
+bolo(x + y);
+```
+
+Print strings
+
+```sutra
+bolo("Namaste Sutra!");
+```
+
+---
+
+## String Literals
+
+Sutra supports string literals enclosed in double quotes.
+
+```sutra
+bolo("Hello World");
+```
+
+---
+
+# Example Program
+
+```sutra
+man x = 30;
+man y = 4;
+
+bolo("Checking Even Number");
+
+yadi(x % 2 == 0){
+    bolo("Even");
+}
+anyatha{
+    bolo("Odd");
+}
+```
+
+Output
+
+```
+Checking Even Number
+Even
+```
+
+
+---
+
+# Running Sutra
+
+## Compile
+
+```bash
+javac Main.java lexer/*.java parser/*.java ast/*.java interpreter/*.java
+```
+
+## Run
+
+```bash
+java Main Test_programs/test.sut
+```
+
+---
+
+# Current Keywords
+
+| Keyword | Meaning |
+|----------|---------|
+| `man` | Variable Declaration |
+| `bolo` | Print |
+| `yadi` | If |
+| `anyatha` | Else |
+
+---
+
+# Current Architecture
 
 ```
 Source Code
@@ -109,245 +235,104 @@ Lexer
 Tokens
       │
       ▼
-Parser
+Recursive Descent Parser
       │
       ▼
 Abstract Syntax Tree
       │
       ▼
-Interpreter
+Visitor Pattern
       │
       ▼
-Output
+Interpreter
 ```
 
 ---
 
-# Prerequisites
+# Features Implemented
 
-Install **Java 17 or later**.
-
-Verify installation
-
-```bash
-java -version
-javac -version
-```
-
----
-
-# Clone the Repository
-
-```bash
-https://github.com/PrashantShukla7/Sutra.git
-
-cd Sutra
-```
-
+- ✅ Lexer
+- ✅ Tokenizer
+- ✅ Recursive Descent Parser
+- ✅ AST (Abstract Syntax Tree)
+- ✅ Visitor Pattern
+- ✅ Tree Walking Interpreter
+- ✅ Variables
+- ✅ Variable Assignment
+- ✅ Integer Literals
+- ✅ String Literals
+- ✅ Arithmetic Operators
+- ✅ Comparison Operators
+- ✅ Equality Operators
+- ✅ Print Statements
+- ✅ Block Statements
+- ✅ If / Else Statements
+- ✅ Program Execution from `.sut` files
 
 ---
 
-# Compile the Project
+# Planned Features
 
-Move into the `src` directory.
+The following features are planned for future releases.
 
-```bash
-cd src
-```
+## Language Features
 
-Compile every Java file.
-
-### Windows
-
-```bash
-javac Main.java lexer/*.java parser/*.java ast/*.java interpreter/*.java
-```
-
-### Linux/macOS
-
-```bash
-javac Main.java lexer/*.java parser/*.java ast/*.java interpreter/*.java
-```
-
-If compilation succeeds, several `.class` files will be generated.
-
----
-
-# Run a Program
-
-Assuming your source file is
-
-```
-Test_programs/test.sut
-```
-
-Run
-
-```bash
-java Main Test_programs/test.sut
-```
-
-If your `Main.java` uses another relative path, adjust the command accordingly.
-
----
-
-# Writing Your Own Program
-
-Create a new file
-
-```
-programs/hello.sut
-```
-
-Example
-
-```sut
-man a = 5;
-man b = 7;
-
-bolo(a * b);
-```
-
-Run it
-
-```bash
-java Main Test_programs/hello.sut
-```
-
----
-
-# Current Grammar
-
-Variable declaration
-
-```sut
-man age = 18;
-```
-
-Assignment
-
-```sut
-age = age + 1;
-```
-
-Printing
-
-```sut
-bolo(age);
-```
-
-Expressions
-
-```sut
-bolo((10 + 20) * 5);
-
-bolo(100 / 4);
-
-bolo(7 + 5 * 3);
-```
-
----
-
-# Example
-
-```sut
-man price = 100;
-man tax = 18;
-
-bolo(price + tax);
-
-price = price * 2;
-
-bolo(price);
-```
-
-Output
-
-```
-118
-200
-```
-
----
-
-# Current Limitations
-
-At the moment, Sutra does **not** support:
-
-- Strings
-- Boolean values
-- Comparison operators
-- `if` statements
-- Loops
+- Boolean literals (`true` / `false`)
+- Logical Operators (`&&`, `||`, `!`)
+- While loops
+- For loops
 - Functions
+- Function parameters
+- Return statements
+- Local variable scopes
+- Nested scopes
 - Arrays
 - Objects
-- User-defined classes
+- Classes
+- Modules
 - Imports
-- Modules
-
-These features are planned for future releases.
-
----
-
-# Roadmap
-
-## ✅ Completed
-
-- Lexer
-- Tokenizer
-- Recursive Descent Parser
-- Abstract Syntax Tree (AST)
-- Visitor Pattern
-- Interpreter
-- Variables
-- Assignments
-- Arithmetic
-- File execution
-
-## 🚧 In Progress
-
-- Comparison operators
-- Boolean values
-- `if` / `else`
-- `while` loops
-- Functions
-- Strings
-- Arrays
-- Modules
+- Comments
+- Floating-point numbers
 - Standard library
-- Interactive REPL
-- Error reporting with line numbers
 
 ---
 
-# Contributing
+## Developer Features
 
-Contributions, suggestions, and bug reports are welcome.
-
-If you'd like to improve Sutra:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a Pull Request
+- Better parser error messages
+- Runtime stack traces
+- REPL (Interactive Shell)
+- Package manager
+- Bytecode compiler (future)
+- Virtual Machine (future)
 
 ---
 
-# License
+# Learning Goals
 
-This project is licensed under the MIT License.
+This project is built to understand:
 
----
-
-# Acknowledgements
-
-Sutra is an fun learning project created to explore how programming languages are designed and implemented. It follows a traditional interpreter architecture using:
-
-- Lexer
-- Parser
-- Abstract Syntax Tree (AST)
+- Lexical Analysis
+- Parsing
+- Context-Free Grammars
+- Recursive Descent Parsing
+- AST Construction
 - Visitor Pattern
-- Interpreter
+- Interpreter Design
+- Programming Language Design
 
-The project is intended for anyone interested in learning compiler and interpreter design by building a language from scratch.
+---
+
+# Future Vision
+
+The long-term goal of Sutra is to evolve from a small educational interpreter into a complete programming language featuring:
+
+- Modern syntax
+- Sanskrit-inspired keywords
+- Functions
+- Modules
+- Object-Oriented Programming
+- Standard Library
+- REPL
+- Bytecode Compiler
+- Virtual Machine
