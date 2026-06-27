@@ -1,0 +1,8 @@
+rakh x = 10;
+rakh y = 40;
+
+bolo(x+y);
+
+x = x * 10;
+
+bolo(x);
