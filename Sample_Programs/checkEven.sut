@@ -1,9 +1,9 @@
 man x = 30;
 man y = 4;
 
-bolo("Checking Even Number");
+bolo("Checking");
 
-yadi(x % 2 == 0){
+yadi(x % 2 barabar 0){
     bolo("Even");
 }
 anyatha{

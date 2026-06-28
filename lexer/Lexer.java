@@ -192,7 +192,7 @@ public class Lexer {
         sb.append(first);
 
         while (!isAtEnd() &&
-                Character.isLetterOrDigit(source.charAt(current))) {
+                (Character.isLetterOrDigit(source.charAt(current)) || source.charAt(current) == '_')) {
 
             sb.append(source.charAt(current));
             current++;
@@ -220,6 +220,26 @@ public class Lexer {
 
             case "bada":
                 add(TokenType.GREATER, ">");
+                break;
+
+            case "chhota":
+                add(TokenType.LESS, "<");
+                break;
+
+            case "barabar":
+                add(TokenType.EQUAL_EQUAL, "==");
+                break;
+
+            case "bada_barabar":
+                add(TokenType.GREATER_EQUAL, ">=");
+                break;
+
+            case "chhota_barabar":
+                add(TokenType.LESS_EQUAL, "<=");
+                break;
+
+            case "alag":
+                add(TokenType.NOT_EQUAL, "!=");
                 break;
 
             case "true":

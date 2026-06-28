@@ -1,0 +1,16 @@
+man marks = 92;
+man age = 19;
+man x = 10;
+man y = 50;
+
+yadi (marks bada_barabar 90) {
+    bolo("A Grade");
+}
+
+yadi (age chhota 18) {
+    bolo("Minor");
+}
+
+yadi (x alag y) {
+    bolo("Different");
+}

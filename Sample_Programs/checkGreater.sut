@@ -1,7 +1,7 @@
 man x = 10;
 man y = 20;
 
-yadi(x > y){
+yadi(x chhota_barabar y){
     bolo("x is greater");
 }
 anyatha{
